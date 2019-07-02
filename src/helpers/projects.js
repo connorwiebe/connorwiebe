@@ -1,5 +1,12 @@
 module.exports = [
   {
+    url: 'https://www.npmjs.com/package/bystrina',
+    title: 'bystrina',
+    date: 'June 13, 2019',
+    image: 'https://i.imgur.com/RlEyO5R.png',
+    description: `Bystrina is a command line interface for downloading torrents. It was created for a school project using commander.js, pm2 and webtorrent.
+    It's available to be installed via npm.`,
+  }, {
     url: 'https://jsjot.com/',
     title: 'jsjot',
     date: 'Apr 20, 2018',
