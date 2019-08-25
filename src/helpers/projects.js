@@ -11,8 +11,8 @@ module.exports = [
     title: 'jsjot',
     date: 'Apr 20, 2018',
     image: 'https://i.imgur.com/SY3rRwP.png',
-    description: `Fast, minimal Javascript console logger for code tinkering. I made this for one of my final assignments in a Javascript course in college.
-    I wanted a simple, quick way to test Javascript snippets and I wasn't satisfied with the existing solutions. It is a Single Page Application that leverages
+    description: `Fast, minimal JavaScript console logger for code tinkering. I made this for one of my final assignments in a JavaScript course in college.
+    I wanted a simple, quick way to test JavaScript snippets and I wasn't satisfied with the existing solutions. It is a Single Page Application that leverages
     the Codemirror library for all the syntax highlighting and indentation and Websockets for real time collaboration. The technologies used are: React, Webpack,
     Node.js, Express, Websockets, Sass, LocalStorage. The server uses Ubuntu with PM2, clustering, SSL certification, HTTP/2.`,
   }, {
