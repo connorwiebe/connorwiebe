@@ -15,7 +15,7 @@ const App = () => {
 
   React.useEffect(() => {
     ;(async () => {
-      const users = await (await fetch('https://hl1upt3s0a.execute-api.ca-central-1.amazonaws.com/dev')).json()
+      const users = (await (await fetch('https://hl1upt3s0a.execute-api.ca-central-1.amazonaws.com/dev')).json()).filter(({username}) => !!username)
       const topology = feature(worldData, worldData.objects.countries)
 
       const bounds = geoBounds(topology)
