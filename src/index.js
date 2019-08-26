@@ -6,6 +6,7 @@ import './css.css'
 
 import { geoMercator, geoPath, geoBounds, geoCentroid, geoDistance } from 'd3-geo'
 import { feature } from 'topojson-client'
+import uniqBy from 'lodash.uniqby'
 
 const App = () => {
 
@@ -15,7 +16,9 @@ const App = () => {
 
   React.useEffect(() => {
     ;(async () => {
-      const users = (await (await fetch('https://hl1upt3s0a.execute-api.ca-central-1.amazonaws.com/dev')).json()).filter(({username}) => !!username)
+      let users = (await (await fetch('https://hl1upt3s0a.execute-api.ca-central-1.amazonaws.com/dev')).json())
+      users = users.filter(({username}) => !!username)
+      users = uniqBy(users, 'username')
       const topology = feature(worldData, worldData.objects.countries)
 
       const bounds = geoBounds(topology)
