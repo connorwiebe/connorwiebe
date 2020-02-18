@@ -17,8 +17,7 @@ const App = () => {
   React.useEffect(() => {
     ;(async () => {
       let users = (await (await fetch('https://hl1upt3s0a.execute-api.ca-central-1.amazonaws.com/dev')).json())
-      users = users.filter(({username}) => !!username)
-      users = uniqBy(users, 'username')
+      users = uniqBy(users, 'username').filter(({username}) => !!username)
       const topology = feature(worldData, worldData.objects.countries)
 
       const bounds = geoBounds(topology)
@@ -82,7 +81,7 @@ const App = () => {
                 </div>
               ) : (
                 <div className="image">
-                  <img src={project.image} alt={project.title}/>
+                  <img src={require(`./images/${project.title}.png`)} alt={project.title}/>
                 </div>
               )}
             </div>

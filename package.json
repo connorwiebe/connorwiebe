@@ -3,10 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://connorwiebe.com",
-  "proxy": "http://localhost:3001",
   "dependencies": {
     "d3-geo": "^1.11.6",
-    "gh-pages": "^2.0.1",
     "lodash.uniqby": "^4.7.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
