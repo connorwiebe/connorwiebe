@@ -16,6 +16,7 @@ const App = () => {
 
   React.useEffect(() => {
     ;(async () => {
+      await fetch('https://ktaiqf22h0.execute-api.ca-central-1.amazonaws.com/_')
       let users = (await (await fetch('https://hl1upt3s0a.execute-api.ca-central-1.amazonaws.com/dev')).json())
       users = uniqBy(users, 'username').filter(({username}) => !!username)
       const topology = feature(worldData, worldData.objects.countries)
