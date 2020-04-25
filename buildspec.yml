@@ -1,10 +1,8 @@
 version: 0.2
-
 env:
   variables:
     NODE_ENV: "staging"
     NODE_ENV: "production"
-
 phases:
   install:
     runtime-versions:
@@ -21,7 +19,6 @@ phases:
       - "yarn build"
     finally:
       - "echo Build completed."
-
 artifacts:
   base-directory: "build"
   files:
