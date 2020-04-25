@@ -10,17 +10,17 @@ phases:
     runtime-versions:
       nodejs: 10
     commands:
-      - echo Deploying to: $NODE_ENV...
-      - echo Installing packages...
+      - "echo Deploying to: $NODE_ENV..."
+      - "echo Installing packages..."
       - "yarn install"
     finally:
-      - echo Install completed.
+      - "echo Install completed."
   build:
     commands:
-      - echo Building application...
+      - "echo Building application..."
       - "yarn build"
     finally:
-      - echo Build completed.
+      - "echo Build completed."
 
 artifacts:
   base-directory: "build"
