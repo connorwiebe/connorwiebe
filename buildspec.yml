@@ -1,6 +1,7 @@
 version: 0.2
 env:
   variables:
+    NODE_ENV: "development"
     NODE_ENV: "staging"
     NODE_ENV: "production"
 phases:
@@ -8,7 +9,7 @@ phases:
     runtime-versions:
       nodejs: 10
     commands:
-      - "echo Deploying to: $NODE_ENV..."
+      - "echo Deploying in: $NODE_ENV..."
       - "echo Installing packages..."
       - "yarn install"
     finally:
