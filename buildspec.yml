@@ -1,8 +1,6 @@
 version: 0.2
 env:
   variables:
-    NODE_ENV: "development"
-    NODE_ENV: "staging"
     NODE_ENV: "production"
 phases:
   install:
@@ -20,7 +18,10 @@ phases:
       - "yarn build"
     finally:
       - "echo Build completed."
-      - "echo BRANCH: $BRANCH"
+  post_build:
+    commands:
+      - "echo DISTRIBUTION_ID: $DISTRIBUTION_ID"
+      - "aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths '**/*'"
 artifacts:
   base-directory: "build"
   files:
