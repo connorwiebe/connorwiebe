@@ -7,20 +7,15 @@ phases:
     runtime-versions:
       nodejs: 10
     commands:
-      - "echo Deploying in: $NODE_ENV..."
       - "echo Installing packages..."
       - "yarn install"
-    finally:
-      - "echo Install completed."
   build:
     commands:
       - "echo Building application..."
       - "yarn build"
-    finally:
-      - "echo Build completed."
   post_build:
     commands:
-      - "echo DISTRIBUTION_ID: $DISTRIBUTION_ID"
+      - "echo Invalidating cache..."
       - "aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths '/*'"
 artifacts:
   base-directory: "build"
