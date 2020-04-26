@@ -20,6 +20,7 @@ phases:
       - "yarn build"
     finally:
       - "echo Build completed."
+      - "echo CODEBUILD_SOURCE_VERSION: $CODEBUILD_SOURCE_VERSION"
 artifacts:
   base-directory: "build"
   files:
