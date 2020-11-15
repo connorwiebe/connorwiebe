@@ -1,0 +1,25 @@
+version: 0.2
+env:
+  variables:
+    NODE_ENV: "staging"
+    NODE_ENV: "production"
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+    commands:
+      - "echo Deploying to: $NODE_ENV..."
+      - "echo Installing packages..."
+      - "yarn install"
+    finally:
+      - "echo Install completed."
+  build:
+    commands:
+      - "echo Building application..."
+      - "yarn build"
+    finally:
+      - "echo Build completed."
+artifacts:
+  base-directory: "build"
+  files:
+    - "**/*"
