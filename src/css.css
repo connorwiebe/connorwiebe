@@ -12,7 +12,12 @@ a {
   color: inherit;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
 }
 
@@ -58,7 +63,7 @@ body {
 .Contact {
   display: flex;
   color: #868e96;
-  font-size: .6rem;
+  font-size: 0.6rem;
   letter-spacing: 3px;
 }
 
@@ -118,14 +123,9 @@ body {
   width: 65%;
 }
 
-svg {
-  width: 100%;
-  height: 100%;
-}
-
 .Project .image img {
   width: 100%;
-  box-shadow: 0 16px 32px 0 rgba(0,0,0,.1);
+  box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.1);
 }
 
 @media screen and (max-width: 900px) {
@@ -134,7 +134,9 @@ svg {
     align-items: center;
     padding: 50px 0;
   }
-  .Project .info, .Project .image, .Project .presentation {
+  .Project .info,
+  .Project .image,
+  .Project .presentation {
     margin: 15px 0;
     width: 90%;
   }
