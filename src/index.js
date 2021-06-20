@@ -31,7 +31,7 @@ const App = () => {
             <div className="Project">
               <div className="info">
                 <h3 className="title">
-                  <a href={project.url} target="_blank" rel="noopener noreferrer">
+                  <a href={project.url} target={project.title === 'ULTRAFOMO' ? '_self' : '_blank'} rel="noopener noreferrer">
                     {project.title}
                   </a>
                 </h3>
