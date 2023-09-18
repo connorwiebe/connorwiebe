@@ -5,7 +5,7 @@ import Notifications from './notifications'
 import NotificationProvider from './notification_provider'
 import './index.css'
 
-const App = () => {
+function App() {
   return (
     <NotificationProvider>
       <Navigation />

@@ -1,62 +1,63 @@
 import React from 'react'
-import {CSSTransition} from 'react-transition-group'
-import {NotificationContext} from './notification_provider'
+import { CSSTransition } from 'react-transition-group'
+import { NotificationContext } from './notification_provider'
 
-const Notification = ({notification, setNotifications}) => {
+function Notification({ notification, setNotifications }) {
   const [active, setActive] = React.useState(false)
 
   React.useEffect(() => {
-    setActive(prev => !prev)
+    setActive((prev) => !prev)
   }, [notification])
 
   const color = notification.type === 'error' ? '#cd2137' : '#007eff'
-  const typeStyle = {borderLeft: `1px solid ${color}`}
+  const typeStyle = { borderLeft: `1px solid ${color}` }
 
   return (
     <CSSTransition
       in={active}
       timeout={{
         enter: 3000,
-        exit: 0
+        exit: 0,
       }}
       classNames="notification"
       onEntered={() => {
         setActive(false)
       }}
       onExited={() => {
-        setNotifications(notifications => {
+        setNotifications((notifications) => {
           notifications.shift()
           return notifications
         })
       }}
-      unmountOnExit>
+      unmountOnExit
+    >
       <div className="notification" style={typeStyle}>
         <span>{notification.msg}</span>
-        <button onClick={() => setActive(false)}>
-          <svg height="8" width="8" viewBox="0 0 8 8"><path d="M8 .8L7.2 0 4 3.2.8 0 0 .8 3.2 4 0 7.2l.8.8L4 4.8 7.2 8l.8-.8L4.8 4 8 .8z"/></svg>
+        <button onClick={() => setActive(false)} type="button">
+          <svg height="8" width="8" viewBox="0 0 8 8">
+            <path d="M8 .8L7.2 0 4 3.2.8 0 0 .8 3.2 4 0 7.2l.8.8L4 4.8 7.2 8l.8-.8L4.8 4 8 .8z" />
+          </svg>
         </button>
       </div>
     </CSSTransition>
   )
 }
 
-export default () => {
-  const {notification} = React.useContext(NotificationContext)
+export default function () {
+  const { notification } = React.useContext(NotificationContext)
   const [notifications, setNotifications] = React.useState([])
 
   React.useEffect(() => {
     if (!notification.msg) return
-    setNotifications(notifications => {
-      return [
-        ...notifications,
-        <Notification key={Math.random()} notification={notification} setNotifications={setNotifications}/>
-      ]
-    })
+    setNotifications((notifications) => [
+      ...notifications,
+      <Notification
+        key={Math.random()}
+        notification={notification}
+        setNotifications={setNotifications}
+      />,
+    ])
   }, [notification])
 
-  return (
-    <div className="notifications">
-      {notifications}
-    </div>
-  )
+  return <div className="notifications">{notifications}</div>
 }

@@ -2,12 +2,11 @@ import React from 'react'
 
 export const NotificationContext = React.createContext(null)
 
-export default ({ children }) => {
+export default function NotificationContextEl({ children }) {
   const [notification, setNotification] = React.useState({})
 
   return (
-    <NotificationContext.Provider
-      value={{ notification, setNotification }}>
+    <NotificationContext.Provider value={{ notification, setNotification }}>
       {children}
     </NotificationContext.Provider>
   )

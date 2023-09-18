@@ -1,11 +1,11 @@
 import React from 'react'
 import numeral from 'numeral'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 import fn from './fn'
 import store from './store'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { NotificationContext } from './notification_provider'
 
-export default ({ positions, setPositions }) => {
+export default function Search({ positions, setPositions }) {
   const { setNotification } = React.useContext(NotificationContext)
   const [loading, setLoading] = React.useState(false)
 
@@ -18,7 +18,10 @@ export default ({ positions, setPositions }) => {
     try {
       setLoading(true)
       const stock = await fn.getStock({ symbol, positions })
-      const newPositions = fn.getPositions({ ...positions, [symbol]: { stock } })
+      const newPositions = fn.getPositions({
+        ...positions,
+        [symbol]: { stock },
+      })
       store.updateStore(newPositions)
       setPositions({ ...newPositions })
     } catch (err) {
@@ -43,12 +46,11 @@ export default ({ positions, setPositions }) => {
       setPositions({ ...newPositions })
     }, 1000)
   }
-  const generateLink = () => {
-    return Object.keys(positions).reduce((sum, symbol, i) => {
+  const generateLink = () =>
+    Object.keys(positions).reduce((sum, symbol, i) => {
       sum += `${i ? ',' : ''}${symbol},${positions[symbol].percentage * 100}`
       return sum
     }, '')
-  }
   const shareStocks = () => {
     setNotification({ msg: 'Link copied to clipboard' })
   }
@@ -62,7 +64,13 @@ export default ({ positions, setPositions }) => {
           <label htmlFor="stock" className="input-title">
             Symbol
           </label>
-          <input type="text" name="stock" id="stock" placeholder="AAPL" title="The stock symbol name." />
+          <input
+            type="text"
+            name="stock"
+            id="stock"
+            placeholder="AAPL"
+            title="The stock symbol name."
+          />
           <span className="input-tip">The stock symbol name.</span>
         </div>
 
@@ -70,7 +78,15 @@ export default ({ positions, setPositions }) => {
           <label htmlFor="time" className="input-title">
             Years
           </label>
-          <input onChange={changeOption} name="time" id="time" defaultValue={store.getItem({ key: 'time' })} type="number" placeholder="15" title="The number of years of data." />
+          <input
+            onChange={changeOption}
+            name="time"
+            id="time"
+            defaultValue={store.getItem({ key: 'time' })}
+            type="number"
+            placeholder="15"
+            title="The number of years of data."
+          />
           <span className="input-tip">The number of years of data.</span>
         </div>
 
@@ -78,15 +94,32 @@ export default ({ positions, setPositions }) => {
           <label htmlFor="capital" className="input-title">
             Capital
           </label>
-          <input onChange={changeOption} name="capital" id="capital" defaultValue={numeral(store.getItem({ key: 'capital' })).format('$0,0')} type="text" placeholder="$10,000" title="The amount of starting capital to be invested." />
-          <span className="input-tip">The amount of starting capital to be invested.</span>
+          <input
+            onChange={changeOption}
+            name="capital"
+            id="capital"
+            defaultValue={numeral(store.getItem({ key: 'capital' })).format(
+              '$0,0'
+            )}
+            type="text"
+            placeholder="$10,000"
+            title="The amount of starting capital to be invested."
+          />
+          <span className="input-tip">
+            The amount of starting capital to be invested.
+          </span>
         </div>
 
-        <button className={`btn add-stock-btn ${loading ? 'loading-light' : ''}`} type="submit">
+        <button
+          className={`btn add-stock-btn ${loading ? 'loading-light' : ''}`}
+          type="submit"
+        >
           Add Stock
         </button>
       </form>
-      <CopyToClipboard text={`https://connorwiebe.com/ultrafomo?s=${generateLink()}`}>
+      <CopyToClipboard
+        text={`https://connorwiebe.com/ultrafomo?s=${generateLink()}`}
+      >
         <button onClick={shareStocks} className="share">
           Share
         </button>

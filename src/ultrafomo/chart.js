@@ -1,13 +1,13 @@
 import React from 'react'
 import { Chart, Line } from 'react-chartjs-2'
 import numeral from 'numeral'
-import store from './store'
 import qs from 'query-string'
-import fn from './fn'
 import Promise from 'bluebird'
+import store from './store'
+import fn from './fn'
 import { NotificationContext } from './notification_provider'
 
-export default ({ positions, setPositions }) => {
+function ChartEl({ positions, setPositions }) {
   const { setNotification } = React.useContext(NotificationContext)
   const [loading, setLoading] = React.useState(null)
 
@@ -16,8 +16,8 @@ export default ({ positions, setPositions }) => {
     const qsParsed = qs.parse(window.location.search).s || ''
     const qsArray = qsParsed ? qsParsed.split(',') : []
 
-    const qsSymbols = qsArray.filter((item) => isNaN(item))
-    const qsPercentages = qsArray.filter((item) => !isNaN(item))
+    const qsSymbols = qsArray.filter((item) => Number.isNaN(item))
+    const qsPercentages = qsArray.filter((item) => !Number.isNaN(item))
 
     const qsPositions = qsSymbols.reduce((sum, cur, i) => {
       sum[cur] = { percentage: +qsPercentages[i] / 100 || 0 }
@@ -30,23 +30,27 @@ export default ({ positions, setPositions }) => {
     }
 
     const requests = Object.keys(pendingPositions).reduce((sum, symbol) => {
-      sum.push(Promise.resolve(fn.getStock({ symbol, positions: pendingPositions })))
+      sum.push(
+        Promise.resolve(fn.getStock({ symbol, positions: pendingPositions }))
+      )
       return sum
     }, [])
 
     ;(async () => {
       const fulfilledPositions = {}
-      await Promise.all(requests.map((request) => request.reflect())).each((inspector) => {
-        if (inspector.isFulfilled()) {
-          const stock = inspector.value()
-          fulfilledPositions[stock.symbol] = {
-            stock,
-            percentage: pendingPositions[stock.symbol].percentage
+      await Promise.all(requests.map((request) => request.reflect())).each(
+        (inspector) => {
+          if (inspector.isFulfilled()) {
+            const stock = inspector.value()
+            fulfilledPositions[stock.symbol] = {
+              stock,
+              percentage: pendingPositions[stock.symbol].percentage,
+            }
+          } else {
+            setNotification({ msg: inspector.error().message, type: 'error' })
           }
-        } else {
-          setNotification({ msg: inspector.error().message, type: 'error' })
         }
-      })
+      )
 
       const newPositions = fn.getPositions(fulfilledPositions)
       store.updateStore(newPositions)
@@ -55,67 +59,76 @@ export default ({ positions, setPositions }) => {
     })()
   }, [setNotification, setPositions])
 
-  Chart.Tooltip.positioners.custom = (els, pos) => {
-    const y = els[0]._model.y
-    const x = els[0]._model.x
+  Chart.Tooltip.positioners.custom = (els) => {
+    // eslint-disable-next-line no-underscore-dangle
+    const { y } = els[0]._model
+    // eslint-disable-next-line no-underscore-dangle
+    const { x } = els[0]._model
     if (y < 100) return { x: x - 50, y: y + 100 }
     return { x: x - 50, y: y - 100 }
   }
   const datasets = Object.keys(positions).map((item) => positions[item].dataset)
 
-  const empty = (loading) => {
-    if (loading === null) return null
-    if (loading === true) {
-      return <div className="loading-large"></div>
-    } else {
-      return (
-        <React.Fragment>
-          <h2 className="empty-title">Search</h2>
-          <span className="empty-subtitle">Type a symbol in the search input to get started.</span>
-        </React.Fragment>
-      )
+  const empty = (emptyLoading) => {
+    if (emptyLoading === null) return null
+    if (emptyLoading === true) {
+      return <div className="loading-large" />
     }
+    return (
+      <>
+        <h2 className="empty-title">Search</h2>
+        <span className="empty-subtitle">
+          Type a symbol in the search input to get started.
+        </span>
+      </>
+    )
   }
 
   return (
     <div className="chart-container">
-      <div className={`empty-container ${!Object.keys(positions).length ? 'display' : ''}`}>{empty(loading)}</div>
+      <div
+        className={`empty-container ${
+          !Object.keys(positions).length ? 'display' : ''
+        }`}
+      >
+        {empty(loading)}
+      </div>
       <div className="chart">
         <Line
           datasetKeyProvider={() => Math.random()}
           options={{
             responsive: true,
             animation: {
-              duration: 0
+              duration: 0,
             },
             layout: {
               padding: 0, // -50
-              margin: 0
+              margin: 0,
             },
             legend: {
-              display: false
+              display: false,
             },
             scales: {
               xAxes: [
                 {
                   gridLines: {
-                    display: false
+                    display: false,
                   },
                   ticks: {
                     display: true,
-                    fontColor: '#020202'
+                    fontColor: '#020202',
                   },
                   type: 'time',
                   time: {
                     tooltipFormat: 'MMMM DD, YYYY',
-                    unit: 'year'
-                  }
-                }
+                    unit: 'year',
+                  },
+                },
               ],
               yAxes: [
                 {
                   gridLines: {
-                    display: false
+                    display: false,
                   },
                   ticks: {
                     display: true,
@@ -124,10 +137,10 @@ export default ({ positions, setPositions }) => {
                     maxTicksLimit: 15,
                     // max: Math.round(max / 100) * 100 - 100,
                     // min: min === -1 ? 0 : Math.round(min / 50) * 50 - 50,
-                    callback: (value, index, values) => `${value}%`
-                  }
-                }
-              ]
+                    callback: (value) => `${value}%`,
+                  },
+                },
+              ],
             },
             tooltips: {
               mode: 'index',
@@ -143,23 +156,27 @@ export default ({ positions, setPositions }) => {
               xPadding: 10,
               yPadding: 10,
               displayColors: false,
-              titleFontFamily: "-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif",
-              bodyFontFamily: "-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif",
+              titleFontFamily:
+                "-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif",
+              bodyFontFamily:
+                "-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif",
               callbacks: {
                 label: (item, data) => {
                   const symbol = data.datasets[item.datasetIndex].label
-                  const price = positions[symbol].range[item.index].price
+                  const { price } = positions[symbol].range[item.index]
                   const formattedPrice = numeral(price).format('$0,0.00')
-                  const formattedRoi = numeral(item.yLabel / 100).format('0.00%')
+                  const formattedRoi = numeral(item.yLabel / 100).format(
+                    '0.00%'
+                  )
                   return `${symbol}: ${formattedPrice} (${formattedRoi})`
-                }
-              }
+                },
+              },
             },
             hover: {
               mode: 'index',
               intersect: false,
-              animationDuration: 0
-            }
+              animationDuration: 0,
+            },
           }}
           data={{ datasets: [{ data: [0, 100] }, ...datasets] }}
         />
@@ -167,3 +184,5 @@ export default ({ positions, setPositions }) => {
     </div>
   )
 }
+
+export default ChartEl

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default () => {
+export default function Logo() {
   return (
     <a href="/ultrafomo">
       <svg width="120px" viewBox="0 0 120 26.2">
