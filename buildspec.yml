@@ -6,7 +6,7 @@ env:
 phases:
   install:
     runtime-versions:
-      nodejs: 18
+      nodejs: 18.x
     commands:
       - "echo Deploying to: $NODE_ENV..."
       - "echo Installing packages..."
