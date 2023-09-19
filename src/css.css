@@ -128,7 +128,7 @@ body {
 .Project .image img {
   width: 100%;
   box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.1);
-  aspect-ratio: 530 / 298;
+  aspect-ratio: auto 640 / 360;
 }
 
 @media screen and (max-width: 900px) {
