@@ -20,7 +20,7 @@ module.exports = [
     over the weekend for fun using React, Chart.js, AWS Lambda and Netlify.`,
   },
   {
-    url: 'https://dreambounty.com/',
+    url: 'https://github.com/connorwiebe/dreambounty',
     title: 'dreambounty',
     date: 'Feb 20, 2018',
     description: `Crowdfunding platform for supporting the creation of content that you want to see content creators produce.
