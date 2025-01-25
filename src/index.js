@@ -5,6 +5,7 @@ import './css.css'
 
 const AppRoute = React.lazy(() => import('./app'))
 const UltrafomoRoute = React.lazy(() => import('./ultrafomo/index'))
+const ProjectsRoute = React.lazy(() => import('./projects/index'))
 
 const app = createRoot(document.getElementById('app'))
 app.render(
@@ -14,6 +15,7 @@ app.render(
         <Routes>
           <Route path="/" element={<AppRoute />} />
           <Route path="/ultrafomo" element={<UltrafomoRoute />} />
+          <Route path="/projects" element={<ProjectsRoute />} />
         </Routes>
       </Router>
     </React.Suspense>
